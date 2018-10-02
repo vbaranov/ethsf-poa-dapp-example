@@ -9,11 +9,14 @@
     "react-scripts": "2.0.3",
     "web3": "^1.0.0-beta.36"
   },
+  "homepage": "https://vbaranov.github.io/ethsf-poa-dapp-example",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -25,6 +28,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "gh-pages": "^2.0.0",
     "openzeppelin-solidity": "github:OpenZeppelin/openzeppelin-solidity#release-v2.0.0",
     "solidity-flattener": "github:poanetwork/solidity-flattener#master"
   }
