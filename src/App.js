@@ -20,15 +20,21 @@ class App extends Component {
 
   async componentDidMount() {
     await this.getAccountAddress()
+    this.getContractAddress()
     this.getNFTSymbol()
     this.getNFTBalance()
   }
 
-  attachToContract() {
+  getContractAddress() {
     const params = new URLSearchParams(this.props.location.search)
     const contractAddressFromQueryString = params.get('contract')
     const isValidAddressFromQueryString = this.web3.utils.isAddress(contractAddressFromQueryString)
-    return new this.web3.eth.Contract(config.abi, (isValidAddressFromQueryString && contractAddressFromQueryString) || config.address)
+    const contractAddress = (isValidAddressFromQueryString && contractAddressFromQueryString) || config.address
+    this.setState({ contractAddress })
+  }
+
+  attachToContract() {
+    return new this.web3.eth.Contract(config.abi, this.state.contractAddress)
   }
 
   async getNFTBalance() {
@@ -103,12 +109,13 @@ class App extends Component {
   }
 
   render() {
+    const blockScoutLink = `https://sokol.blockscout.com/address/${this.state && this.state.contractAddress}`
     return (
       <div className="App">
         <div className="App-intro">
           <Container>
             <Card className='blue darken-4' textClassName='white-text'>
-              Balance of {this.state && this.state.acc} is <h5>{this.state && this.state.balance} {this.state && this.state.symbol}</h5>
+              Balance of {this.state && this.state.acc} is <h5>{this.state && this.state.balance} <a href={blockScoutLink} target='_blank'>{this.state && this.state.symbol}</a></h5>
             </Card>
             <div>
               <Button waves='light' onClick={() => this.onMint()}>Mint</Button>
