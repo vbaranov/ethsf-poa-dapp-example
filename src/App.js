@@ -10,9 +10,9 @@ class App extends Component {
     let web3 = window.web3;
     this.abi = config.abi;
     if (typeof web3 !== 'undefined') {
-      web3 = new Web3(web3.currentProvider);
+      web3 = new Web3(web3.currentProvider)
     } else {
-      web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+      web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
     }
 
     this.web3 = web3
@@ -25,7 +25,10 @@ class App extends Component {
   }
 
   attachToContract() {
-    return new this.web3.eth.Contract(config.abi, config.address)
+    const params = new URLSearchParams(this.props.location.search)
+    const contractAddressFromQueryString = params.get('contract')
+    const isValidAddressFromQueryString = this.web3.utils.isAddress(contractAddressFromQueryString)
+    return new this.web3.eth.Contract(config.abi, (isValidAddressFromQueryString && contractAddressFromQueryString) || config.address)
   }
 
   async getNFTBalance() {
@@ -54,7 +57,7 @@ class App extends Component {
 
   async getAccountAddress() {
     const accounts = this.web3 && await this.web3.eth.getAccounts()
-    this.setState({acc: accounts && accounts[0]})
+    this.setState({ acc: accounts && accounts[0] })
   }
 
   onMint = async () => {
@@ -63,7 +66,8 @@ class App extends Component {
     const acc = this.state && this.state.acc
     await this.getNFTTotalSupply()
     const totalSupply = this.state && this.state.totalSupply
-    contractInstance.methods.mint(acc, (parseInt(totalSupply) + 1)).send({
+    contractInstance.methods.mint(acc, (parseInt(totalSupply) + 1))
+    .send({
       from: acc
     })
     .on('transactionHash', (txHash) => this.checkTxMined(txHash, isMined, this.pollingReceiptCheck))
