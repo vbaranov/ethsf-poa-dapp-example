@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/ethsf-poa-dapp-example/precache-manifest.59843f1718c25fcf1f75c3ea3aee6101.js"
+  "/ethsf-poa-dapp-example/precache-manifest.30177110da4b882eca0c7f977d40ff52.js"
 );
 
 workbox.clientsClaim();
